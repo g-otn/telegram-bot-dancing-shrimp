@@ -4,5 +4,8 @@ node_modules/
 # Temp assets
 assets/temp/*
 
-# .exe files (ffmpeg executables)
+# FFmpeg executables
 *.exe
+
+# dotenv Enviroment Variables file
+*.env
