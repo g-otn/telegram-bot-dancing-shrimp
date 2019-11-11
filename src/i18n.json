@@ -12,8 +12,8 @@
         "pt-br": "*1/4* 📄 Recuperando infomações do seu áudio..."
     },
     "downloading": {
-        "default": "*2/4* ⬇ Downloading your áudio...",
-        "pt-br": "*2/4* ⬇ Baixando seu áudio"
+        "default": "*2/4* ⬇ Downloading your áudio: $%",
+        "pt-br": "*2/4* ⬇ Baixando seu áudio: $%"
     },
     "progress": {
         "default": "*3/4* 🎥 Processing video: $%",
