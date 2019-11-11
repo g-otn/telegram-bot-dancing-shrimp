@@ -4,6 +4,7 @@ const fs = require('fs')
 const https = require('https');
 const generateVideo = require('./generateVideo')
 const i18n = require('./i18n.json')
+const botStartDate = Date.now()
 
 // Send help message
 bot.onText(/shrimphelp/, (msg, match) => {
@@ -11,22 +12,19 @@ bot.onText(/shrimphelp/, (msg, match) => {
   const langCode = msg.from.language_code
 
   bot.sendMessage(chatId, getText('help', langCode), { parse_mode: 'Markdown' })
-    .then(msg => {
-      console.log('res:', msg.message_id)
-    })
 });
 
 // Generate audio sent with /shrimp caption
 bot.on('audio', async (msg, metadata) => {
   const chatId = msg.chat.id;
   const langCode = msg.from.language_code
-  const caption = msg.caption
+  const caption = msg.caption || ''
   const audioFileId = msg.audio.file_id
   const fromId = msg.from.id
   const date = msg.date
 
-  // Filter for audio with caption '/shrimp <start>'
-  if (!caption.match(/^shrimp/i))
+  // Filter for audio with caption '/shrimp <start>' and recent message
+  if (!caption.match(/^shrimp/i) || date < botStartDate)
     return
 
   console.info('New processing\n\tfrom:', msg.from.first_name, msg.from.id, '\n\tchatId:', chatId, '\n\tmsgId:', msg.message_id, '\n\tdate: ', msg.date, '\n\tcaption:', caption)
