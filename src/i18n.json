@@ -1,7 +1,7 @@
 {
     "help": {
-        "default": "🍤 🍻 Send a audio file with the caption `shrimp <start>`, where `<start>` is optional and specifies which part of the audio should be the start.\n*Examples*:\n`shrimp`\n`shrimp 0:50`\n`shrimp 160`",
-        "pt-br": "🍤 🍻 Envie um arquivo de audio com a legenda `shrimp <inicio>`, onde `<inicio>` é opcional e diz em que parte do audio se deve começar.\n*Exemplos:*\n`shrimp`\n`shrimp 0:50`\n`shrimp 160`"
+        "default": "🍤 🍻 Reply to this message with an audio file and which part of the audio should be the start in the caption (optional).\n*Examples*: `0:50`, `160`",
+        "pt-br": "🍤 🍻 Responda a essa mensagem com um arquivo de audio e em que parte do audio se deve começar na legenda (opcional).\n*Exemplos*: `0:50`, `160`"
     },
     "start": {
         "default": "🍤 🍻 Video generation started, this can take a few seconds.",

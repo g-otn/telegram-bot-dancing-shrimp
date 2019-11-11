@@ -9,23 +9,31 @@ const botStartDate = Date.now()
 
 
 // Send help message
-bot.onText(/shrimphelp/, (msg, match) => {
+bot.onText(/shrimp/, (msg, match) => {
+  // Filter for recent message
+  const date = msg.date
+  if (date * 1000 < botStartDate)
+    return
+
   const chatId = msg.chat.id;
   const langCode = msg.from.language_code
 
   bot.sendMessage(chatId, getText('help', langCode), { parse_mode: 'Markdown' })
+    .then(msg => {
+      const msgId = msg.message_id
+      bot.onReplyToMessage(chatId, msgId, (msg) => {
+        bot.deleteMessage(chatId, msgId)
+        start(msg)
+      })
+    })
 });
 
 
-
 // Generate audio sent with /shrimp caption
-bot.on('message', async (msg, metadata) => {
-  const caption = msg.caption
+async function start(msg) {
   const date = msg.date
-
-  // Filter for audio with caption '/shrimp <start>' and recent message
-  if (!caption || !caption.match(/^shrimp/i) || date * 1000 < botStartDate)
-    return
+  const caption = msg.caption
+  console.log(msg)
 
   const chatId = msg.chat.id;
   const langCode = msg.from.language_code
@@ -192,9 +200,14 @@ bot.on('message', async (msg, metadata) => {
           fs.unlinkSync(tempAudioFilePath)
           fs.unlinkSync(tempVideoFilePath)
         })
+        .catch(reason => {
+          // Error uploading video
+          console.error('Error uploading video:', reason)
+          sendError(chatId, progressMsgId, langCode, 'Error uploading video')
+        })
     }
   )
-})
+}
 
 
 
