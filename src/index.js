@@ -64,7 +64,7 @@ async function start(msg) {
     chat_id: chatId,
     message_id: progressMsgId,
     parse_mode: 'Markdown'
-  })
+  }).catch(err => { console.warn('Error editing message:', err) })
 
   let audioPath, audioSize, audioFormat
 
@@ -86,7 +86,7 @@ async function start(msg) {
     chat_id: chatId,
     message_id: progressMsgId,
     parse_mode: 'Markdown'
-  })
+  }).catch(err => { console.warn('Error editing message:', err) })
 
   const tempAudioFilePath = `assets/temp/audio/${fromId}_${date}.mp3`
   const audioDownloadStream = fs.createWriteStream(tempAudioFilePath) // Create temp file
@@ -105,7 +105,7 @@ async function start(msg) {
       chat_id: chatId,
       message_id: progressMsgId,
       parse_mode: 'Markdown'
-    })
+    }).catch(err => { console.warn('Error editing message:', err) })
   }, 1250) // Sent within a interval so editMessageText doesn't get called extremely fast
 
   await new Promise((resolve, reject) => {
@@ -150,7 +150,7 @@ async function start(msg) {
         chat_id: chatId,
         message_id: progressMsgId,
         parse_mode: 'Markdown'
-      })
+      }).catch(err => { console.warn('Error editing message:', err) })
 
       resolve()
     })
@@ -169,7 +169,7 @@ async function start(msg) {
         chat_id: chatId,
         message_id: progressMsgId,
         parse_mode: 'Markdown'
-      })
+      }).catch(err => { console.warn('Error editing message:', err) })
     },
     (err, stdout, stderr) => {  // Error
       sendError(chatId, progressMsgId, langCode, 'Error processing video')
@@ -185,7 +185,7 @@ async function start(msg) {
         chat_id: chatId,
         message_id: progressMsgId,
         parse_mode: 'Markdown'
-      })
+      }).catch(err => { console.warn('Error editing message:', err) })
 
       bot.sendVideo(chatId, videoStream)
         .then(() => {
@@ -219,7 +219,7 @@ function sendError(chatId, msgId, langCode, errorMessage) {
       chat_id: chatId,
       message_id: msgId,
       parse_mode: 'Markdown'
-    })
+    }).catch(err => { console.warn('Error editing message:', err) })
   }
 }
 
