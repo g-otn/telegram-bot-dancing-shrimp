@@ -1,0 +1,30 @@
+{
+  "name": "discord-bot-shrimp-dancing",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A Discord Bot that generates a \"Shrimp Dancing\" video with a given audio on top\"",
+  "keywords": [
+    "discord",
+    "discord.js"
+  ],
+  "homepage": "https://github.com/g-otn/shrimp-dancing#readme",
+  "bugs": {
+    "url": "https://github.com/g-otn/shrimp-dancing/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/g-otn/shrimp-dancing.git"
+  },
+  "license": "MIT",
+  "author": "g-otn (https://github.com/g-otn)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "node-telegram-bot-api": "^0.40.0",
+    "rimraf": "^3.0.0"
+  }
+}

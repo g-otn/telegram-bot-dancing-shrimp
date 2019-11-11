@@ -1,0 +1,30 @@
+{
+    "help": {
+        "default": "🍤 🍻 Reply to this message with an audio file and which part of the audio should be the start in the caption (optional).\n*Examples*: `0:50`, `160`",
+        "pt-br": "🍤 🍻 Responda a essa mensagem com um arquivo de audio e em que parte do audio se deve começar na legenda (opcional).\n*Exemplos*: `0:50`, `160`"
+    },
+    "start": {
+        "default": "🍤 🍻 Video generation started, this can take a few seconds.",
+        "pt-br": "🍤 🍻 Geração do vídeo iniciado, isso pode demorar alguns segundos."
+    },
+    "getting_info": {
+        "default": "*1/4* 📄 Getting information about your audio...",
+        "pt-br": "*1/4* 📄 Recuperando infomações do seu áudio..."
+    },
+    "downloading": {
+        "default": "*2/4* ⬇ Downloading your áudio: $%",
+        "pt-br": "*2/4* ⬇ Baixando seu áudio: $%"
+    },
+    "progress": {
+        "default": "*3/4* 🎥 Processing video: $%",
+        "pt-br": "*3/4* 🎥 Processando o vídeo: $%"
+    },
+    "uploading": {
+        "default": "*4/4* ⬆ Sending video...",
+        "pt-br": "*4/4* ⬆ Enviando o video..."
+    },
+    "error": {
+        "default": "🍤 💦 Something went wrong, try again.\n`$`",
+        "pt-br": "🍤 💦 Ocorreu um erro, tente novamente.\n`$`"
+    }
+}
