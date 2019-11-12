@@ -18,13 +18,7 @@
   "license": "MIT",
   "author": "g-otn (https://github.com/g-otn)",
   "main": "index.js",
-<<<<<<< HEAD
   "scripts": { "start": "node index.js" },
-=======
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
->>>>>>> 8096b2bed88c98eea46dec1ed12fa0a581ae033d
   "dependencies": {
     "dotenv": "^8.2.0",
     "fluent-ffmpeg": "^2.1.2",
