@@ -10,7 +10,11 @@ exports.generate = (audioStream, audioFormat, audioStart, videoOutputPath, progr
         //     `[1:a]atrim=start=${audioStart},asetpts=PTS-STARTPTS[skippedaudio]`,
         //     'skippedaudio'
         // )
-        .outputOption('-shortest') // Output video ends whichever input ends first
+        .outputOptions([
+            '-shortest', // Output video ends whichever input ends first
+            '-strict -2', // Need to enable for Glitch's ffmpeg
+            '-preset veryfast' // Glitch's ffmpeg is SUPER slow, so this should help a little
+        ])
         .outputFormat('mp4')
         .on('progress', progress)
         .on('error', error)
