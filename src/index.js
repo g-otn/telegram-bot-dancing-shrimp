@@ -4,7 +4,14 @@ const fs = require('fs')
 const https = require('https');
 const generateVideo = require('./generateVideo')
 const i18n = require('./i18n.json')
+
 const botStartDate = Date.now()
+
+// Limit message updating to prevent hitting request limit
+let canUpdateMessage = true
+setInterval(() => {
+  canUpdateMessage = true
+}, 250)
 
 
 
@@ -33,7 +40,6 @@ bot.onText(/shrimp/, (msg, match) => {
 async function start(msg) {
   const date = msg.date
   const caption = msg.caption
-  console.log(msg)
 
   const chatId = msg.chat.id;
   const langCode = msg.from.language_code
@@ -64,7 +70,7 @@ async function start(msg) {
     chat_id: chatId,
     message_id: progressMsgId,
     parse_mode: 'Markdown'
-  }).catch(err => { console.warn('Error editing message:', err) })
+  }).catch(err => { console.warn('Error editing message: ' + err) })
 
   let audioPath, audioSize, audioFormat
 
@@ -86,29 +92,15 @@ async function start(msg) {
     chat_id: chatId,
     message_id: progressMsgId,
     parse_mode: 'Markdown'
-  }).catch(err => { console.warn('Error editing message:', err) })
+  }).catch(err => { console.warn('Error editing message: ' + err) })
 
   const tempAudioFilePath = `assets/temp/audio/${fromId}_${date}.mp3`
   const audioDownloadStream = fs.createWriteStream(tempAudioFilePath) // Create temp file
 
   // Start audio file download
   console.info('Downloading file...')
-
-  // Download progress
-  let totalBytesDownloaded = 0, lastSentBytesDownloadedValue = 0
-  const downloadProgressMessageInterval = setInterval(() => {
-    if (totalBytesDownloaded === lastSentBytesDownloadedValue) return
-
-    // Send download progress message
-    lastSentBytesDownloadedValue = Math.round((totalBytesDownloaded / audioSize) * 100)
-    bot.editMessageText(getText('downloading', langCode, lastSentBytesDownloadedValue), {
-      chat_id: chatId,
-      message_id: progressMsgId,
-      parse_mode: 'Markdown'
-    }).catch(err => { console.warn('Error editing message:', err) })
-  }, 1250) // Sent within a interval so editMessageText doesn't get called extremely fast
-
   await new Promise((resolve, reject) => {
+    let totalBytesDownloaded = 0, lastProgressPercentage
     // Get audio file
     https.get(`https://api.telegram.org/file/bot${process.env.BOT_TOKEN}/${audioPath}`)
       .on('response', response => {
@@ -118,8 +110,29 @@ async function start(msg) {
         } else
           reject(response.statusCode + ' ' + response.statusMessage)
 
-        // Update download progress value
-        response.on('data', chunk => totalBytesDownloaded += chunk.length)
+        // Chunk of downloading file data written on temp file event
+        response.on('data', chunk => {
+          const progressPercentage = Math.round((totalBytesDownloaded / audioSize) * 100)
+            
+          // Update download progress value
+          totalBytesDownloaded += chunk.length
+
+          // Prevents no message edit difference  telegram error
+          if (progressPercentage === lastProgressPercentage) return 
+
+          if (canUpdateMessage) {
+            canUpdateMessage = false
+
+            // Send download progress message
+            bot.editMessageText(getText('downloading', langCode, progressPercentage), {
+              chat_id: chatId,
+              message_id: progressMsgId,
+              parse_mode: 'Markdown'
+            }).catch(err => { console.warn('Error editing message: ' + err) })
+
+            lastProgressPercentage = progressPercentage
+          }
+        })
       })
       .on('error', err => {
         reject(err.message)
@@ -128,7 +141,6 @@ async function start(msg) {
     // Download error
     .catch(err => {
       audioDownloadStream.close()
-      clearInterval(downloadProgressMessageInterval)
       sendError(chatId, progressMsgId, langCode, `Error downloading audio`)
       console.error('Error downloading audio:', err)
     })
@@ -137,7 +149,6 @@ async function start(msg) {
   await new Promise((resolve, reject) => {
     audioDownloadStream.on('close', () => {
       // Stop sending download progress messages updates
-      clearInterval(downloadProgressMessageInterval)
 
       console.log('\tbytesWritten:', audioDownloadStream.bytesWritten)
       if (audioDownloadStream.bytesWritten !== audioSize) {
@@ -150,7 +161,7 @@ async function start(msg) {
         chat_id: chatId,
         message_id: progressMsgId,
         parse_mode: 'Markdown'
-      }).catch(err => { console.warn('Error editing message:', err) })
+      }).catch(err => { console.warn('Error editing message: ' + err) })
 
       resolve()
     })
@@ -165,11 +176,13 @@ async function start(msg) {
   const tempVideoFilePath = `assets/temp/video/${fromId}_${date}.mp4`
   generateVideo.generate(audioStream, audioFormat, seconds, tempVideoFilePath,
     progress => {               // Progress
+      if (!canUpdateMessage) return
+
       bot.editMessageText(getText('progress', langCode, Math.round(progress.percent)), {
         chat_id: chatId,
         message_id: progressMsgId,
         parse_mode: 'Markdown'
-      }).catch(err => { console.warn('Error editing message:', err) })
+      }).catch(err => { console.warn('Error editing message: ' + err) })
     },
     (err, stdout, stderr) => {  // Error
       sendError(chatId, progressMsgId, langCode, 'Error processing video')
@@ -185,7 +198,7 @@ async function start(msg) {
         chat_id: chatId,
         message_id: progressMsgId,
         parse_mode: 'Markdown'
-      }).catch(err => { console.warn('Error editing message:', err) })
+      }).catch(err => { console.warn('Error editing message: ' + err) })
 
       bot.sendVideo(chatId, videoStream)
         .then(() => {
@@ -219,7 +232,7 @@ function sendError(chatId, msgId, langCode, errorMessage) {
       chat_id: chatId,
       message_id: msgId,
       parse_mode: 'Markdown'
-    }).catch(err => { console.warn('Error editing message:', err) })
+    }).catch(err => { console.warn('Error editing message: ' + err) })
   }
 }
 
