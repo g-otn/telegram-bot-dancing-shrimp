@@ -1,6 +1,9 @@
 # telegram-bot-dancing-shrimp
 This telegram bot uses FFmpeg to generate "Dancing Shrimp with Beer" videos, with a given audio on top of it.
 
+## Usage
+Chat with a live version of the bot at [Telegram Web](https://web.telegram.org/#/im?p=@DancingShrimpBot) | [Telegram app](https://t.me/dancingshrimpbot).
+
 ## Installation
 **Requirements**: A [Telegram Bot](https://core.telegram.org/bots#3-how-do-i-create-a-bot) and its API Token, Node.js and npm.
 
