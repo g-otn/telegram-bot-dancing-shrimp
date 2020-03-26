@@ -264,8 +264,8 @@ function getSeconds(caption) {
     return start
 
   // MM:SS and HH:MM:SS format
-  const p = start.split(':'),
-    s = 0, m = 1
+  const p = start.split(':')
+  let s = 0, m = 1
 
   while (p.length > 0) {
     s += m * parseInt(p.pop(), 10)
