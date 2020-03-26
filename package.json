@@ -18,7 +18,9 @@
   "license": "MIT",
   "author": "g-otn (https://github.com/g-otn)",
   "main": "index.js",
-  "scripts": { "start": "node index.js" },
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "dotenv": "^8.2.0",
     "fluent-ffmpeg": "^2.1.2",
