@@ -1,6 +1,6 @@
 {
   "name": "discord-bot-shrimp-dancing",
-  "version": "0.0.1",
+  "version": "0.1.2",
   "private": true,
   "description": "A Discord Bot that generates a \"Shrimp Dancing\" video with a given audio on top\"",
   "keywords": [
